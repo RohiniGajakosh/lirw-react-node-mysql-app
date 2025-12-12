@@ -1,7 +1,7 @@
 const pool = require('../configs/db');
 
 function BooksController() {}
- 
+
 const getQuery = `
 SELECT 
   b.id as id, 
@@ -89,4 +89,33 @@ BooksController.prototype.update = async (req, res) => {
     });
 
   } catch (error) {
-    co
+    console.error("Error updating book:", error);
+    return res.status(500).json({
+      message: "Something unexpected has happened. Please try again later.",
+    });
+  }
+};
+
+// DELETE BOOK
+BooksController.prototype.delete = async (req, res) => {
+  try {
+    const bookId = req.params.id;
+
+    await pool.query(`DELETE FROM book WHERE id = ?`, [bookId]);
+
+    const books = await pool.query(getQuery);
+
+    return res.status(200).json({
+      message: "Book deleted successfully!",
+      books
+    });
+
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    return res.status(500).json({
+      message: "Something unexpected has happened. Please try again later.",
+    });
+  }
+};
+
+module.exports = new BooksController();
