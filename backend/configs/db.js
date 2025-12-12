@@ -1,11 +1,12 @@
-const mysql = require('mysql2');
+const mariadb = require('mariadb');
 
-const db = mysql.createConnection({
-   host: 'database-1.ct60e6a2sl8x.ap-south-1.rds.amazonaws.com',
-   port: '3306',
-   user: 'appuser',
-   password: 'rohini123',
-   database: 'myappdb'
+const pool = mariadb.createPool({
+  host: 'database-1.ct60e6a2sl8x.ap-south-1.rds.amazonaws.com',
+  user: 'appuser',
+  password: 'rohini123',
+  database: 'myappdb',
+  port: 3306,
+  connectionLimit: 5
 });
 
-module.exports = db;
+module.exports = pool;
