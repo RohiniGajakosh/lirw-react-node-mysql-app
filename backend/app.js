@@ -1,24 +1,26 @@
 const express = require('express');
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-const routes = require('./routes');
 const cors = require('cors');
-const db = require('./configs/db'); // Import the db connection
+const routes = require('./routes');
+const pool = require('./configs/db'); // MariaDB pool
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 
-db.connect((err) => {
-   if (err) {
-      console.error('Error connecting to MySQL: ' + err.stack);
-      return;
-   }
-   console.log('Connected to MySQL Database');
-});
+// Test MariaDB connection at startup (async)
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('Connected to MariaDB Database');
+    connection.release();
+  } catch (err) {
+    console.error('Error connecting to MariaDB:', err);
+  }
+})();
 
-// Add your routes here
+// Register routes
 app.use('/api', routes);
 
 module.exports = app;
