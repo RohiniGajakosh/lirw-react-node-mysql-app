@@ -1,11 +1,11 @@
 const mysql = require('mysql2');
-
+<COMMENT
 const db = mysql.createConnection({
-   host: 'localhost',
+   host: 'database-1.ct60e6a2sl8x.ap-south-1.rds.amazonaws.com',
    port: '3306',
-   user: 'root',
-   password: '12345678',
-   database: 'react_node_app'
+   user: 'appuser',
+   password: 'rohini123',
+   database: 'myappdb'
 });
-
+COMMENT>>
 module.exports = db;
